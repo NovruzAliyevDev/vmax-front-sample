@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VMAX Esports — Ana səhifə</title>
+<meta name="description" content="VMAX Esports — Azərbaycanın peşəkar esports klubu.">
+<meta name="theme-color" content="#010a1c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;width:100%;min-height:100%}
+body{background:#010a1c;color:#fff;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+*{box-sizing:border-box}
+a{color:#fff;text-decoration:none}a:hover{color:#9fd4ff}
+.page{position:relative;width:100%;background:#010a1c}
+.ab{position:absolute}
+.hit{display:block}
+.hit:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid #6fb8ff;outline-offset:-2px}
+.h{font-family:Outfit,Inter,sans-serif}
+.ibtn{background:none;border:0;padding:0;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif}
+/* --- scaled canvases --- */
+.cv{position:relative;overflow:hidden;aspect-ratio:var(--w)/var(--h)}
+.cv>.cv-in{position:absolute;left:0;top:0;width:calc(var(--w)*1px);height:calc(var(--h)*1px);transform-origin:0 0;background:var(--bg) 0 0/100% 100% no-repeat}
+.cv.flow{aspect-ratio:auto;overflow:visible}
+.cv.flow>.cv-in{position:relative;width:auto;height:auto;transform:none!important;background:none}
+/* --- desktop tiling (exact plate proportions) --- */
+.row1{display:grid;grid-template-columns:18fr 427fr 0fr 433fr 11fr 364fr 8fr 325fr 14fr}
+.row1>.live{grid-column:2}.row1>.tourn{grid-column:4}.row1>.stats{grid-column:6}.row1>.jersey{grid-column:8}
+.row2{display:grid;grid-template-columns:15fr 856fr 9fr 383fr 9fr 315fr 13fr;margin-top:.5625%}
+.row2>.news{grid-column:2}.row2>.matches{grid-column:4}.row2>.rank{grid-column:6}
+.ftr{margin-top:.375%}
+/* --- typography / components (plate frame px) --- */
+.ttl{font-size:17px;font-weight:800;line-height:28px;letter-spacing:-.2px;white-space:nowrap}
+.nav a{top:14px;height:32px;line-height:32px;font-size:14px;font-weight:500;color:#eef4ff;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.nav a.on{left:372px;width:100px;justify-content:center;border-radius:999px;background:linear-gradient(180deg,#3b82ff 0%,#1d5be0 100%);border:1px solid #86c6ff;box-shadow:0 0 14px rgba(60,140,255,.7),inset 0 1px 0 rgba(255,255,255,.35);font-weight:600}
+.lang{font-size:15px;font-weight:600;gap:7px}
+.join{display:block;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);background:linear-gradient(135deg,#7cc4ff,#2a74e8 50%,#163c8a);padding:1px;filter:drop-shadow(0 0 10px rgba(60,150,255,.6))}
+.join-in{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:100%;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);background:linear-gradient(180deg,#11326f 0%,#0a1f4a 100%);font-size:15px;font-weight:600;white-space:nowrap}
+.logo-img,.burger{display:none}
+.kicker{font-family:Outfit,Inter,sans-serif;font-size:15.5px;font-weight:700;letter-spacing:1.6px;color:#3aa8ff;line-height:18px;text-shadow:0 0 10px rgba(58,168,255,.5)}
+h1.h{margin:0;font-size:38px;line-height:38px;font-weight:800;letter-spacing:.6px;transform:skewX(-5deg);transform-origin:left bottom;text-shadow:0 2px 10px rgba(0,0,0,.6),0 0 22px rgba(60,140,255,.35)}
+.grad{background:linear-gradient(180deg,#5ec2ff 0%,#2a8dff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{margin:0;font-size:12.5px;line-height:18px;letter-spacing:-.4px;color:#d2def3}
+.cta{display:contents}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;border:1px solid #86c6ff;background:linear-gradient(180deg,#2f80ff 0%,#1454dc 100%);color:#fff;font-weight:600;font-size:15px;box-shadow:0 0 16px rgba(47,125,255,.65),inset 0 1px 0 rgba(255,255,255,.35);white-space:nowrap;font-family:Inter,sans-serif;cursor:pointer}
+.btn-o{background:linear-gradient(180deg,#0c1d40 0%,#071431 100%);border-color:rgba(140,195,255,.6);box-shadow:0 0 10px rgba(47,125,255,.25)}
+.more{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;color:#fff}
+.lbl{color:#cbd8ef}
+.cd{border-radius:8px;background:linear-gradient(180deg,#10224a 0%,#0a1736 100%);border:1px solid rgba(100,165,255,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.cd b{font-size:22px;font-weight:800;line-height:26px}
+.cd span{font-size:11px;color:#cbd8ef;line-height:13px}
+.tag{height:18px;padding:0 11px;border-radius:9px;background:linear-gradient(180deg,#3a94ff,#1c6ae8);border:1px solid rgba(150,205,255,.7);font-size:11px;font-weight:600;line-height:16px;display:inline-flex;align-items:center;white-space:nowrap}
+.tag.pu{background:linear-gradient(180deg,#6e62ff,#4a3fd9);border-color:rgba(190,180,255,.7)}
+.ntitle{font-size:14.5px;font-weight:700;line-height:21px;letter-spacing:-.35px}
+.all{display:flex;align-items:center;justify-content:flex-end;gap:6px;font-size:13px;color:#9fd0ff;line-height:20px;white-space:nowrap}
+.nhead,.nitems,.nitem,.pic,.social{display:contents}
+.mt{font-size:13.5px;font-weight:700;line-height:18px;white-space:nowrap;letter-spacing:-.2px}
+.md{font-size:12px;color:#aec3e6;line-height:16px}
+.bell{color:#8ecbff}
+.rk{height:26px;display:flex;align-items:center;font-size:13.5px}
+.tabs{border-radius:8px;background:linear-gradient(180deg,rgba(14,34,74,.95),rgba(8,22,50,.95));border:1px solid rgba(110,180,255,.4);padding:1px;display:flex;gap:2px}
+.tab{height:28px;flex:1 1 0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#cbd8ef;font-weight:500;border-radius:6px;border:0;background:none;font-family:Inter,sans-serif;cursor:pointer}
+.tab.on{color:#fff;font-weight:600;background:linear-gradient(180deg,#1b4590 0%,#123270 100%);box-shadow:inset 0 -2px 0 #3aa9ff}
+.ico{display:block;margin:0 auto;color:#4fb0ff;filter:drop-shadow(0 0 6px rgba(70,170,255,.75))}
+.chev{color:#8ecbff}
+.ph{font-size:18px;font-weight:800;line-height:26px;letter-spacing:-.1px;white-space:nowrap}
+.follow{font-size:15px;font-weight:600;line-height:24px;white-space:nowrap}
+.lin{position:relative;width:100%;height:100%}
+
+/* ================= FLOW MODES ================= */
+/* header */
+.hdr.flow>.cv-in{display:flex;align-items:center;gap:14px;height:64px;padding:0 16px;background:linear-gradient(180deg,#061531 0%,#030c21 100%);border-bottom:1px solid rgba(80,150,255,.35)}
+.hdr.flow .logo-hit{display:none}
+.hdr.flow .logo-img{display:block;height:44px}.hdr.flow .logo-img img{display:block;height:44px;width:auto}
+.hdr.flow .nav{display:flex;align-items:center;gap:2px;margin-left:auto}
+.hdr.flow .nav a{position:static;height:36px;padding:0 10px;font-size:14px}
+.hdr.flow .nav a.on{width:auto;padding:0 16px}
+.hdr.flow .srch,.hdr.flow .lang{position:static;width:34px;height:34px}
+.hdr.flow .lang{width:auto}
+.hdr.flow .join{position:static;width:auto!important;height:40px!important}
+.hdr.flow .join-in{padding:0 16px;font-size:14px}
+@media (max-width:1099px){
+  .hdr.flow .burger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;background:none;border:1px solid rgba(120,180,255,.45);border-radius:8px;cursor:pointer;padding:0 9px}
+  .hdr.flow .burger span{display:block;height:2px;background:#dbeaff;border-radius:2px}
+  .hdr.flow .nav{display:none}
+  .hdr.flow.menu-open .nav{display:flex;flex-direction:column;align-items:stretch;gap:4px;position:absolute;left:0;right:0;top:64px;padding:12px 16px 16px;background:linear-gradient(180deg,#06152f,#040e22);border-bottom:1px solid rgba(80,150,255,.35);z-index:50;box-shadow:0 20px 40px rgba(0,0,0,.5)}
+  .hdr.flow.menu-open .nav a{height:44px;font-size:16px;justify-content:flex-start;padding:0 14px}
+  .hdr.flow.menu-open .nav a.on{justify-content:flex-start}
+  .hdr.flow{z-index:20}
+}
+@media (max-width:639px){
+  .hdr.flow .lang,.hdr.flow .srch{display:none}
+  .hdr.flow .join .txt{display:none}
+  .hdr.flow .join-in{padding:0 12px}
+  .hdr.flow .logo-img,.hdr.flow .logo-img img{height:38px}
+}
+/* hero */
+.hero.flow>.cv-in{position:relative;min-height:380px;padding:40px 24px 44px;display:flex;flex-direction:column;justify-content:flex-end;background:url('assets/hero.jpg') 55% 20%/cover no-repeat}
+.hero.flow>.cv-in::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(1,10,28,.92) 0%,rgba(1,10,28,.7) 38%,rgba(1,10,28,.15) 70%)}
+.hero.flow .ab{position:relative;left:auto!important;top:auto!important;z-index:1}
+.hero.flow .kicker{font-size:14px}
+.hero.flow h1.h{width:auto!important;max-width:620px;font-size:clamp(30px,5.2vw,46px)!important;line-height:1.02!important;margin:8px 0 14px!important;transform:skewX(-5deg)}
+.hero.flow .lead{width:auto!important;max-width:520px;font-size:15px;line-height:1.5;letter-spacing:0}
+.hero.flow .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;position:relative;z-index:1}
+.hero.flow .btn{position:static;width:auto!important;height:42px!important;padding:0 20px;font-size:15px!important}
+.hero.flow .hero-hit{display:none}
+@media (max-width:639px){
+  .hero.flow>.cv-in{min-height:470px;padding:32px 16px 28px;justify-content:flex-end;background-position:60% 0}
+  .hero.flow>.cv-in::before{background:linear-gradient(180deg,rgba(1,10,28,.15) 0%,rgba(1,10,28,.55) 45%,rgba(1,10,28,.95) 75%)}
+  .hero.flow .cta{width:100%}.hero.flow .cta .btn{flex:1 1 150px}
+}
+/* games strip */
+.strip.flow{height:111px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.strip.flow>.cv-in{width:1600px;height:111px;background:var(--bg) 0 0/1600px 111px no-repeat}
+/* news */
+.news.flow>.cv-in{position:relative;padding:14px 12px 16px;border-radius:12px;border:1px solid rgba(90,150,255,.42);background:linear-gradient(180deg,#07183a 0%,#040f27 100%);box-shadow:0 0 18px rgba(30,90,200,.25)}
+.news.flow .nhead{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.news.flow .nhead .ico{position:static;margin:0}
+.news.flow .nhead .ttl{position:static}
+.news.flow .all{position:static;margin-left:auto;width:auto!important}
+.news.flow .nitems{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px}
+.news.flow .nitem{display:block}
+.news.flow .pic{display:block;position:relative;aspect-ratio:210/82;border-radius:8px;overflow:hidden;background:var(--img) center/cover no-repeat;border:1px solid rgba(120,170,255,.25)}
+.news.flow .pic::after{content:"";position:absolute;left:0;right:0;bottom:0;height:60%;background:linear-gradient(180deg,rgba(1,10,28,0),rgba(1,10,28,.88))}
+.news.flow .tag{left:8px!important;top:auto!important;bottom:8px;z-index:1}
+.news.flow .date{left:auto!important;right:8px;top:auto!important;bottom:9px;width:auto!important;font-size:11px;z-index:1;color:#e3ecfb}
+.news.flow .ntitle{position:static;display:block;width:auto!important;margin-top:8px;font-size:13px;line-height:18px}
+@media (max-width:479px){.news.flow .nitems{grid-template-columns:1fr}.news.flow .pic{aspect-ratio:210/96}}
+/* footer */
+.ftr.flow>.cv-in{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;padding:14px 16px;border-radius:12px;border:1px solid rgba(90,150,255,.4);background:linear-gradient(180deg,#07183a 0%,#040f27 100%)}
+.ftr.flow .ph{position:static;font-size:16px}
+.ftr.flow .pchev,.ftr.flow .schev{display:none}
+.ftr.flow .logos{position:static;flex:1 1 320px;width:auto!important;height:50px!important;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.ftr.flow .logos::-webkit-scrollbar{display:none}
+.ftr.flow .lin{width:872px;height:50px;background:url('assets/partners.jpg') 0 0/872px 50px no-repeat}
+.ftr.flow .social{display:flex;align-items:center;gap:12px;margin-left:auto}
+.ftr.flow .follow{position:static;font-size:14px}
+.ftr.flow .sicons{position:relative;left:auto!important;top:auto!important;background:url('assets/social.jpg') 0 0/176px 30px no-repeat}
+
+/* ================= TABLET / MOBILE GRID ================= */
+@media (max-width:1099px){
+  .row1,.row2{grid-template-columns:1fr 1fr;gap:12px;padding:0 12px;margin-top:12px}
+  .row1>.cv,.row2>.cv{grid-column:auto}
+  .row2>.news{grid-column:1/-1}
+  .ftr{margin:12px}
+  .strip{margin-top:0}
+}
+@media (max-width:639px){
+  .row1,.row2{grid-template-columns:1fr}
+  .row2>.news{grid-column:auto}
+}
+</style>
+</head>
+<body>
+<main class="page">
+<div class="cv hdr" data-w="1600" data-h="58" data-min="1280" style="--w:1600;--h:58;--bg:url('assets/header.jpg')">
+<div class="cv-in">
+
+  <a href="#top" class="ab hit logo-hit" aria-label="VMAX Esports ana səhifə" style="left: 58px; top: 4px; width: 234px; height: 52px"></a>
+  <a href="#top" class="logo-img" aria-label="VMAX Esports ana səhifə"><img src="assets/logo.png" alt="VMAX Esports" width="235" height="54"></a>
+  <nav class="nav" aria-label="Əsas menyu">
+    <a href="#top" class="ab on">Ana səhifə</a>
+    <a href="#komanda" class="ab" style="left: 503px">Komanda</a>
+    <a href="#oyunlar" class="ab" style="left: 598px">Oyunlar <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
+    <a href="#turnirler" class="ab" style="left: 700px">Turnirlər</a>
+    <a href="#nailiyyetler" class="ab" style="left: 795px">Nailiyyətlər</a>
+    <a href="#xeberler" class="ab" style="left: 902px">Xəbərlər</a>
+    <a href="#media" class="ab" style="left: 988px">Media</a>
+    <a href="#haqqimizda" class="ab" style="left: 1060px">Haqqımızda</a>
+    <a href="#elaqe" class="ab" style="left: 1172px">Əlaqə</a>
+  </nav>
+  <button aria-label="Axtarış" class="ab ibtn srch" style="left: 1250px; top: 13px; width: 34px; height: 34px">
+    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+  </button>
+  <button class="ab ibtn lang" style="left: 1308px; top: 14px; height: 32px">AZ <svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+  <a href="#qosul" class="ab join" style="left: 1378px; top: 8px; width: 190px; height: 44px">
+    <span class="join-in">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="color: #7fc4ff"><circle cx="9" cy="8" r="3.5" fill="currentColor"/><path d="M2.5 19c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6z" fill="currentColor"/><circle cx="16.5" cy="9" r="2.8" fill="currentColor" opacity=".8"/><path d="M14.5 13.5c3 0 6 2 6 5.5h-5" fill="currentColor" opacity=".8"/></svg>
+      <span class="txt">Komandaya Qoşul</span>
+    </span>
+  </a>
+  <button class="burger" aria-label="Menyu" aria-expanded="false"><span></span><span></span><span></span></button>
+
+</div></div>
+<div class="cv hero" data-w="1600" data-h="268" data-min="1280" style="--w:1600;--h:268;--bg:url('assets/hero.jpg')" id="top">
+<div class="cv-in">
+
+  <span class="ab kicker" style="left: 58px; top: 33px">VMAX ESPORTS</span>
+  <h1 class="ab h" style="left: 56px; top: 54px; width: 390px">AZƏRBAYCANIN<br>PEŞƏKAR<br><span class="grad">ESPORTS</span> KLUBU</h1>
+  <p class="ab lead" style="left: 56px; top: 171px; width: 376px">VMAX Esports — müxtəlif oyunlarda çıxış edən, beynəlxalq turnirlərdə Azərbaycanı təmsil edən peşəkar esports təşkilatıdır.</p>
+  <div class="cta">
+    <a href="#qosul" class="ab btn" style="left: 50px; top: 215px; width: 190px; height: 35px">Komandaya Qoşul <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#media" class="ab btn btn-o" style="left: 258px; top: 215px; width: 162px; height: 35px; font-size: 14px">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/></svg>
+      Tanıtım Videosu
+    </a>
+  </div>
+  <span class="ab hit hero-hit" role="img" aria-label="VMAX Esports oyunçuları və klub loqosu" style="left: 420px; top: 2px; width: 1165px; height: 266px"></span>
+
+</div></div>
+<div class="cv strip" data-w="1600" data-h="111" data-min="900" style="--w:1600;--h:111;--bg:url('assets/strip.jpg')" id="oyunlar" aria-label="Oyunlarımız">
+<div class="cv-in">
+
+  <h2 class="ab" style="left: 38px; top: 40px; margin: 0; font-size: 19px; font-weight: 800; line-height: 26px; letter-spacing: -.2px; white-space: nowrap">Oyunlarımız</h2>
+  <a href="#efootball" class="ab hit" aria-label="eFootball" style="left: 152px; top: 14px; width: 182px; height: 70px"></a>
+  <a href="#pubg" class="ab hit" aria-label="PUBG Mobile" style="left: 347px; top: 14px; width: 172px; height: 70px"></a>
+  <a href="#cs2" class="ab hit" aria-label="CS2" style="left: 531px; top: 14px; width: 168px; height: 70px"></a>
+  <a href="#fc27" class="ab hit" aria-label="EA Sports FC27" style="left: 707px; top: 14px; width: 172px; height: 70px"></a>
+  <a href="#valorant" class="ab hit" aria-label="Valorant" style="left: 887px; top: 14px; width: 172px; height: 70px"></a>
+  <a href="#codm" class="ab hit" aria-label="Call of Duty Mobile" style="left: 1067px; top: 14px; width: 172px; height: 70px"></a>
+  <a href="#freefire" class="ab hit" aria-label="Free Fire" style="left: 1247px; top: 14px; width: 172px; height: 70px"></a>
+  <a href="#oyunlar-hamisi" class="ab more" style="left: 1430px; top: 12px; width: 146px; height: 76px">
+    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="color: #dbeaff"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+    <span style="font-size: 14px; font-weight: 600; line-height: 17px">Daha çox<br>Oyunlar</span>
+    <svg data-rel width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" class="ab chev" style="left: 112px; top: 30px"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+  </a>
+
+</div></div>
+<section class="row1" aria-label="Canlı məlumatlar">
+<div class="cv live" data-w="427" data-h="157" style="--w:427;--h:157;--bg:url('assets/live.jpg')" role="article" aria-labelledby="t-live">
+<div class="cv-in">
+
+  <span class="ab" aria-hidden="true" style="left: 26px; top: 19px; width: 13px; height: 13px; border-radius: 50%; background: #ff2a2a; box-shadow: 0 0 10px #ff3b3b"></span>
+  <h3 id="t-live" class="ab ttl" style="left: 46px; top: 11px; margin: 0">CANLI MATÇ</h3>
+  <span class="ab" style="left: 334px; top: 13px; width: 60px; height: 26px; border-radius: 6px; background: linear-gradient(180deg,#ff4a4a,#e0141f); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; font-style: italic; letter-spacing: .3px; box-shadow: 0 0 14px rgba(255,50,50,.75)">LIVE</span>
+  <span class="ab" style="left: 140px; top: 45px; width: 144px; height: 20px; border-radius: 6px; background: linear-gradient(180deg,#0e2452,#0a1a3c); border: 1px solid rgba(110,180,255,.45); font-size: 10.5px; letter-spacing: -.2px; line-height: 18px; text-align: center; color: #dce7fa; white-space: nowrap">eFootball League – Playoff</span>
+  <span class="ab" style="left: 164px; top: 66px; width: 100px; text-align: center; font-size: 33px; font-weight: 800; line-height: 44px; letter-spacing: 1px">2 - 1</span>
+  <span class="ab" style="left: 34px; top: 103px; width: 96px; text-align: center; line-height: 18px"><span style="font-size: 16px; font-weight: 800; display: block">VMAX</span><span style="font-size: 15px; font-weight: 500; display: block; color: #e9f0fb">Esports</span></span>
+  <span class="ab" style="left: 282px; top: 103px; width: 112px; text-align: center; font-size: 14px; font-weight: 600; line-height: 18px">Baku United</span>
+  <a href="#canli" class="ab btn" style="left: 137px; top: 119px; width: 150px; height: 36px">Canlı İzlə <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+
+</div></div>
+<div class="cv tourn" data-w="433" data-h="157" style="--w:433;--h:157;--bg:url('assets/tourn.jpg')" id="turnirler" role="article" aria-labelledby="t-tour">
+<div class="cv-in">
+
+  <svg class="ab ico" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="left: 11px; top: 14px"><rect x="3" y="5" width="18" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 5l1.5-2h5L16 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+  <h3 id="t-tour" class="ab ttl" style="left: 45px; top: 11px; margin: 0">Növbəti Turnir</h3>
+  <span class="ab" style="left: 93px; top: 46px; font-size: 14.5px; font-weight: 700; line-height: 20px; letter-spacing: -.1px; white-space: nowrap">Azerbaijan Esports Cup 2026</span>
+  <span class="ab lbl" style="left: 93px; top: 70px; display: flex; align-items: center; gap: 6px; font-size: 11.5px; line-height: 18px; white-space: nowrap"><span style="width: 12px; height: 12px; border-radius: 3px; background: #2f7dff; display: inline-block"></span>eFootball <span style="color: #6fb8ff">•</span> 10 – 25 Nov 2026</span>
+  <div class="ab cd" style="left: 25px; top: 93px; width: 68px; height: 58px"><b>03</b><span>Gün</span></div>
+  <div class="ab cd" style="left: 95px; top: 93px; width: 68px; height: 58px"><b>12</b><span>Saat</span></div>
+  <div class="ab cd" style="left: 165px; top: 93px; width: 68px; height: 58px"><b>45</b><span>Dəq</span></div>
+  <div class="ab cd" style="left: 235px; top: 93px; width: 68px; height: 58px"><b>27</b><span>San</span></div>
+
+</div></div>
+<div class="cv stats" data-w="364" data-h="157" style="--w:364;--h:157;--bg:url('assets/stats.jpg')" id="nailiyyetler" role="article" aria-labelledby="t-stats">
+<div class="cv-in">
+
+  <svg class="ab ico" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="left: 17px; top: 14px"><circle cx="8.5" cy="8" r="3" fill="currentColor"/><circle cx="16" cy="9" r="2.5" fill="currentColor" opacity=".85"/><path d="M2.5 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5z" fill="currentColor"/><path d="M14 19c0-2.5 1.6-4.5 4-4.5s3.5 2 3.5 4.5z" fill="currentColor" opacity=".85"/></svg>
+  <h3 id="t-stats" class="ab ttl" style="left: 49px; top: 11px; margin: 0">Klub Statistikası</h3>
+  <div class="ab" style="left: 17px; top: 53px; width: 84px; text-align: center"><svg class="ico" width="42" height="42" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v4.5a5 5 0 0 1-10 0V3zM9 20h6M12 12.5V20M7 5H4a3 3 0 0 0 3 4M17 5h3a3 3 0 0 1-3 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg><b style="display: block; font-size: 26px; font-weight: 700; line-height: 30px; margin-top: 8px">35+</b><span class="lbl" style="display: block; font-size: 12.5px; line-height: 16px; margin-top: 2px">Turnir</span></div>
+  <div class="ab" style="left: 101px; top: 53px; width: 84px; text-align: center"><svg class="ico" width="42" height="42" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="9.5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="9.5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 19c0-3 2.2-5.5 5-5.5s5 2.5 5 5.5M1.5 18c0-2.5 1.8-4.3 4.2-4.3M22.5 18c0-2.5-1.8-4.3-4.2-4.3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><b style="display: block; font-size: 26px; font-weight: 700; line-height: 30px; margin-top: 8px">60+</b><span class="lbl" style="display: block; font-size: 12.5px; line-height: 16px; margin-top: 2px">Oyunçu</span></div>
+  <div class="ab" style="left: 187px; top: 53px; width: 84px; text-align: center"><svg class="ico" width="42" height="42" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><b style="display: block; font-size: 26px; font-weight: 700; line-height: 30px; margin-top: 8px">25+</b><span class="lbl" style="display: block; font-size: 12.5px; line-height: 16px; margin-top: 2px">Nailiyyət</span></div>
+  <div class="ab" style="left: 269px; top: 53px; width: 84px; text-align: center"><svg class="ico" width="42" height="42" viewBox="0 0 24 24" aria-hidden="true"><path d="M1.8 12s3.7-6.3 10.2-6.3S22.2 12 22.2 12s-3.7 6.3-10.2 6.3S1.8 12 1.8 12z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><b style="display: block; font-size: 26px; font-weight: 700; line-height: 30px; margin-top: 8px">500K+</b><span class="lbl" style="display: block; font-size: 12.5px; line-height: 16px; margin-top: 2px">İcma Üzvü</span></div>
+
+</div></div>
+<div class="cv jersey" data-w="325" data-h="157" style="--w:325;--h:157;--bg:url('assets/jersey.jpg')" role="article" aria-label="VMAX forması 2026/27">
+<div class="cv-in">
+
+  <span class="ab hit" role="img" aria-label="VMAX 2026/27 forması" style="left: 19px; top: 8px; width: 150px; height: 145px"></span>
+  <span class="ab" style="left: 208px; top: 43px; width: 110px; line-height: 23px; letter-spacing: .6px"><span style="display: block; font-size: 23px; font-weight: 800">VMAX</span><span style="display: block; font-size: 23px; font-weight: 800">Jersey</span><span style="display: block; font-size: 17px; font-weight: 500; color: #e9f0fb; line-height: 22px; letter-spacing: .8px">2026/27</span></span>
+  <a href="#sifaris" class="ab btn" style="left: 179px; top: 108px; width: 138px; height: 31px; font-size: 14px; border-radius: 9px">İndi Sifariş Et <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <span class="ab" aria-hidden="true" style="left: 159px; top: 140px; display: flex; gap: 6px"><span style="width: 7px; height: 7px; border-radius: 50%; background: #dbe7fb"></span><span style="width: 7px; height: 7px; border-radius: 50%; background: #3d5a8a"></span><span style="width: 7px; height: 7px; border-radius: 50%; background: #3d5a8a"></span></span>
+
+</div></div>
+</section>
+<section class="row2" aria-label="Xəbərlər və reytinq">
+<div class="cv news" data-w="856" data-h="187" data-min="640" style="--w:856;--h:187;--bg:url('assets/news.jpg')" id="xeberler" role="article" aria-labelledby="t-news">
+<div class="cv-in">
+
+  <div class="nhead">
+    <svg class="ab ico" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="left: 15px; top: 9px"><circle cx="12" cy="7" r="3" fill="currentColor"/><circle cx="6" cy="10" r="2.3" fill="currentColor" opacity=".85"/><circle cx="18" cy="10" r="2.3" fill="currentColor" opacity=".85"/><path d="M6.5 20c0-3.2 2.4-5.5 5.5-5.5s5.5 2.3 5.5 5.5zM1.5 18.5c0-2.3 1.7-4 4-4M22.5 18.5c0-2.3-1.7-4-4-4" fill="currentColor"/></svg>
+    <h3 id="t-news" class="ab ttl" style="left: 45px; top: 7px; margin: 0">Son Xəbərlər</h3>
+    <a href="#xeberler-hamisi" class="ab all" style="left: 745px; top: 11px; width: 106px">Hamısına bax <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+  <div class="nitems">
+    
+    <div class="nitem">
+      <div class="pic" style="--img:url('assets/n1.jpg')">
+        <span class="ab tag" style="left: 23px; top: 111px">Nailiyyət</span>
+        <span class="ab lbl date" style="left: 139px; top: 112px; width: 90px; text-align: right; font-size: 11.5px; line-height: 16px">05 Nov 2026</span>
+      </div>
+      <a href="#x1" class="ab ntitle" style="left: 23px; top: 137px; width: 206px">VMAX Esports beynəlxalq turnirdə ÇEMPİON oldu!</a>
+    </div>
+    
+    <div class="nitem">
+      <div class="pic" style="--img:url('assets/n2.jpg')">
+        <span class="ab tag" style="left: 251px; top: 111px">Oyun</span>
+        <span class="ab lbl date" style="left: 355px; top: 112px; width: 90px; text-align: right; font-size: 11.5px; line-height: 16px">02 Nov 2026</span>
+      </div>
+      <a href="#x2" class="ab ntitle" style="left: 251px; top: 137px; width: 194px">VMAX Esports FC27 komandasını təqdim etdi</a>
+    </div>
+    
+    <div class="nitem">
+      <div class="pic" style="--img:url('assets/n3.jpg')">
+        <span class="ab tag" style="left: 463px; top: 111px">Komanda</span>
+        <span class="ab lbl date" style="left: 569px; top: 112px; width: 90px; text-align: right; font-size: 11.5px; line-height: 16px">30 Okt 2026</span>
+      </div>
+      <a href="#x3" class="ab ntitle" style="left: 463px; top: 137px; width: 196px">Yeni oyunçular heyətimizə qoşuldu</a>
+    </div>
+    
+    <div class="nitem">
+      <div class="pic" style="--img:url('assets/n4.jpg')">
+        <span class="ab tag pu" style="left: 678px; top: 111px">Turnir</span>
+        <span class="ab lbl date" style="left: 755px; top: 112px; width: 90px; text-align: right; font-size: 11.5px; line-height: 16px">28 Okt 2026</span>
+      </div>
+      <a href="#x4" class="ab ntitle" style="left: 678px; top: 137px; width: 172px">Azerbaijan Esports Cup 2026 qeydiyyatı başladı!</a>
+    </div>
+  </div>
+
+</div></div>
+<div class="cv matches" data-w="383" data-h="187" style="--w:383;--h:187;--bg:url('assets/matches.jpg')" role="article" aria-labelledby="t-matches">
+<div class="cv-in">
+
+  <svg class="ab ico" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="left: 25px; top: 9px"><rect x="3" y="5" width="18" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="7" y="13" width="3" height="3" fill="currentColor"/><rect x="12" y="13" width="3" height="3" fill="currentColor" opacity=".7"/></svg>
+  <h3 id="t-matches" class="ab ttl" style="left: 56px; top: 7px; margin: 0">Gələcək Matçlar</h3>
+  <a href="#matclar" class="ab all" style="left: 268px; top: 11px; width: 104px">Hamısına bax <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <a href="#m1" class="ab mt" style="left: 142px; top: 49px">VMAX vs Karabakh Esports</a>
+<span class="ab md" style="left: 142px; top: 69px">12 Nov, 20:00</span>
+<button aria-label="VMAX vs Karabakh Esports matçını xatırlat" class="ab ibtn bell" style="left: 342px; top: 51px; width: 28px; height: 28px"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+  <a href="#m2" class="ab mt" style="left: 142px; top: 95px">VMAX vs Neftchi Esports</a>
+<span class="ab md" style="left: 142px; top: 115px">14 Nov, 21:00</span>
+<button aria-label="VMAX vs Neftchi Esports matçını xatırlat" class="ab ibtn bell" style="left: 342px; top: 97px; width: 28px; height: 28px"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+  <a href="#m3" class="ab mt" style="left: 142px; top: 141px">VMAX vs Baku United</a>
+<span class="ab md" style="left: 142px; top: 161px">16 Nov, 19:00</span>
+<button aria-label="VMAX vs Baku United matçını xatırlat" class="ab ibtn bell" style="left: 342px; top: 143px; width: 28px; height: 28px"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+
+</div></div>
+<div class="cv rank" data-w="315" data-h="187" style="--w:315;--h:187;--bg:url('assets/rank.jpg')" role="article" aria-labelledby="t-rank">
+<div class="cv-in">
+
+  <svg class="ab ico" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="left: 18px; top: 9px"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 16v-5M12 16V7M17 16v-3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+  <h3 id="t-rank" class="ab ttl" style="left: 50px; top: 7px; margin: 0">Reytinq</h3>
+  <div class="ab tabs" role="tablist" aria-label="Reytinq növü" style="left: 128px; top: 7px; width: 178px; height: 32px">
+    <button class="tab on" role="tab" aria-selected="true">AZ</button>
+    <button class="tab" role="tab" aria-selected="false">Regional</button>
+    <button class="tab" role="tab" aria-selected="false">Qlobal</button>
+  </div>
+  <span class="ab" aria-hidden="true" style="left: 18px; top: 41px; width: 290px; height: 26px; border-radius: 6px; background: linear-gradient(90deg, rgba(90,130,190,.38) 0%, rgba(90,130,190,.12) 60%, rgba(90,130,190,0) 100%)"></span>
+  <ol style="margin: 0; padding: 0; list-style: none">
+    <li class="ab rk" style="left: 18px; top: 41px; width: 290px"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="margin-left: 5px"><path d="M3 18h18l-1.2-10-4.8 4L12 5l-3 7-4.8-4z" fill="#ffd246"/><rect x="3" y="18" width="18" height="2.5" fill="#ffd246"/></svg><span style="margin-left: 48px; font-weight: 700">VMAX Esports</span><span style="margin-left: auto; font-weight: 700; margin-right: 8px">3200 P</span></li>
+    <li class="ab rk" style="left: 18px; top: 68px; width: 290px"><span style="width: 32px; text-align: center; font-weight: 700; color: #c9d6ee">2</span><span style="margin-left: 48px; font-weight: 500; color: #eef3fc">Baku United</span><span style="margin-left: auto; font-weight: 700; margin-right: 8px">3050 P</span></li>
+    <li class="ab rk" style="left: 18px; top: 95px; width: 290px"><span style="width: 32px; text-align: center; font-weight: 700; color: #ff9a3d">3</span><span style="margin-left: 48px; font-weight: 500; color: #eef3fc">Neftchi Esports</span><span style="margin-left: auto; font-weight: 700; margin-right: 8px">2960 P</span></li>
+    <li class="ab rk" style="left: 18px; top: 122px; width: 290px"><span style="width: 32px; text-align: center; font-weight: 700; color: #c9d6ee">4</span><span style="margin-left: 48px; font-weight: 500; color: #eef3fc">Qarabağ Esports</span><span style="margin-left: auto; font-weight: 700; margin-right: 8px">2880 P</span></li>
+    <li class="ab rk" style="left: 18px; top: 149px; width: 290px"><span style="width: 32px; text-align: center; font-weight: 700; color: #c9d6ee">5</span><span style="margin-left: 48px; font-weight: 500; color: #eef3fc">AzerForce</span><span style="margin-left: auto; font-weight: 700; margin-right: 8px">2760 P</span></li>
+  </ol>
+
+</div></div>
+</section>
+<div class="cv ftr" data-w="1600" data-h="104" data-min="1280" style="--w:1600;--h:104;--bg:url('assets/footer.jpg')" id="elaqe">
+<div class="cv-in">
+
+  <h3 class="ab ph" style="left: 80px; top: 28px; margin: 0">Tərəfdaşlarımız</h3>
+  <button aria-label="Əvvəlki tərəfdaşlar" class="ab ibtn chev pchev" style="left: 254px; top: 28px; width: 26px; height: 26px"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+  <div class="ab logos" style="left: 300px; top: 16px; width: 872px; height: 50px">
+    <div class="lin">
+      <a data-rel href="#p-tiktok" class="ab hit" aria-label="TikTok" style="left: 0px; top: 0px; width: 102px; height: 50px"></a>
+      <a data-rel href="#p-pasha" class="ab hit" aria-label="PASHA Bank" style="left: 148px; top: 0px; width: 100px; height: 50px"></a>
+      <a data-rel href="#p-ispace" class="ab hit" aria-label="iSpace" style="left: 288px; top: 0px; width: 104px; height: 50px"></a>
+      <a data-rel href="#p-birmarket" class="ab hit" aria-label="Birmarket" style="left: 428px; top: 0px; width: 124px; height: 50px"></a>
+      <a data-rel href="#p-asan" class="ab hit" aria-label="Asan xidmət" style="left: 593px; top: 0px; width: 119px; height: 50px"></a>
+      <a data-rel href="#p-vmax" class="ab hit" aria-label="VMAX Agency" style="left: 748px; top: 0px; width: 124px; height: 50px"></a>
+    </div>
+  </div>
+  <button aria-label="Növbəti tərəfdaşlar" class="ab ibtn chev pchev" style="left: 1198px; top: 28px; width: 26px; height: 26px"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+  <div class="social">
+    <span class="ab follow" style="left: 1266px; top: 30px">Bizi izləyin</span>
+    <div class="ab sicons" style="left: 1356px; top: 24px; width: 176px; height: 30px">
+      <a data-rel href="https://youtube.com" class="ab hit" aria-label="YouTube" style="left: 0px; top: 0px; width: 36px; height: 30px"></a>
+      <a data-rel href="https://discord.com" class="ab hit" aria-label="Discord" style="left: 38px; top: 0px; width: 36px; height: 30px"></a>
+      <a data-rel href="https://instagram.com" class="ab hit" aria-label="Instagram" style="left: 74px; top: 0px; width: 34px; height: 30px"></a>
+      <a data-rel href="https://tiktok.com" class="ab hit" aria-label="TikTok" style="left: 110px; top: 0px; width: 32px; height: 30px"></a>
+      <a data-rel href="https://x.com" class="ab hit" aria-label="X" style="left: 142px; top: 0px; width: 32px; height: 30px"></a>
+    </div>
+    <button aria-label="Daha çox sosial şəbəkə" class="ab ibtn chev schev" style="left: 1524px; top: 28px; width: 26px; height: 26px"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+  </div>
+
+</div></div>
+</main>
+<script>
+
+function initVmaxScaler(root){
+  root = root || document;
+  var cvs = [].slice.call(root.querySelectorAll('.cv'));
+  function vw(){ return document.documentElement.clientWidth || window.innerWidth; }
+  function apply(cv){
+    var inner = cv.firstElementChild; if(!inner) return;
+    var w = +cv.getAttribute('data-w'), min = +(cv.getAttribute('data-min') || 0);
+    if (min && vw() < min){ cv.classList.add('flow'); inner.style.transform = ''; return; }
+    cv.classList.remove('flow');
+    var s = cv.getBoundingClientRect().width / w;
+    inner.style.transform = 'scale(' + s + ')';
+  }
+  function all(){ cvs.forEach(apply); }
+  var ro = null;
+  if (window.ResizeObserver){
+    ro = new ResizeObserver(function(){ all(); });
+    cvs.forEach(function(c){ ro.observe(c); });
+    ro.observe(document.documentElement);
+  }
+  window.addEventListener('resize', all);
+  window.addEventListener('orientationchange', all);
+  // burger menu
+  var hdr = root.querySelector('.hdr'), burger = root.querySelector('.burger');
+  function onBurger(){ var open = hdr.classList.toggle('menu-open'); burger.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+  if (burger){ burger.addEventListener('click', onBurger); }
+  if (hdr){ hdr.querySelectorAll('.nav a').forEach(function(a){ a.addEventListener('click', function(){ hdr.classList.remove('menu-open'); }); }); }
+  all(); requestAnimationFrame(all);
+  return function(){ if(ro) ro.disconnect(); window.removeEventListener('resize', all); window.removeEventListener('orientationchange', all); if(burger) burger.removeEventListener('click', onBurger); };
+}
+
+initVmaxScaler(document);
+</script>
+</body>
+</html>
